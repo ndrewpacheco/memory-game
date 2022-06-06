@@ -1,4 +1,15 @@
 const gameContainer = document.getElementById("game");
+const startGame = document.createElement("button");
+startGame.innerText = "Start new game?";
+gameContainer.append(startGame);
+
+let matchedColors;
+let matchesMade = 0;
+
+// The app can only have a maximum of 5 winning matches with this current version
+const WINNING_NUMBER_OF_MATCHES = 1;
+let matchesText = `Matches made: ${matchesMade}. You need ${WINNING_NUMBER_OF_MATCHES} to win`;
+const displayMatchResults = document.createElement("h2");
 
 const COLORS = [
   "red",
@@ -37,8 +48,6 @@ function shuffle(array) {
   return array;
 }
 
-let shuffledColors = shuffle(COLORS);
-
 // this function loops over the array of colors
 // it creates a new div and gives it a class with the value of the color
 // it also adds an event listener for a click for each card
@@ -62,7 +71,7 @@ function createDivsForColors(colorArray) {
 // TODO: Implement this function!
 let firstGuess;
 let secondGuess;
-let matchedColors = [];
+
 const nullifyGuesses = () => {
   firstGuess = null;
   secondGuess = null;
@@ -73,25 +82,39 @@ const clearBackgroundColors = () => {
   secondGuess.style.backgroundColor = "";
 };
 
-function handleCardClick(event) {
-  // you can use event.target to see which element was clicked
+const createMatch = () => {
+  matchedColors.push(firstGuess.className);
+  matchesMade = matchedColors.length;
+  displayMatchResults.innerText = matchesText;
+};
 
+const determineWinner = () => {
+  if (matchesMade === WINNING_NUMBER_OF_MATCHES) {
+    displayMatchResults.innerText = "YOU WON! ";
+    displayMatchResults.append(startGame);
+  }
+};
+
+function handleCardClick(event) {
   // Guard clauses
   if (firstGuess && secondGuess) return;
   if (matchedColors.includes(event.target.className)) {
-    alert("Card has already been matched!");
+    gameContainer.alert("Card has already been matched!");
     return;
   }
 
   if (firstGuess) {
     secondGuess = event.target;
     secondGuess.style.backgroundColor = secondGuess.className;
+
     if (firstGuess === secondGuess) {
       alert("Guesses cannot be the same card!");
       clearBackgroundColors();
       nullifyGuesses();
     } else if (firstGuess.className === secondGuess.className) {
-      matchedColors.push(firstGuess.className);
+      createMatch();
+
+      determineWinner();
       nullifyGuesses();
     } else {
       setTimeout(() => {
@@ -105,7 +128,21 @@ function handleCardClick(event) {
   }
 }
 
-// when the DOM loads
-createDivsForColors(shuffledColors);
+const resetGame = () => {
+  gameContainer.innerHTML = "";
+  matchesMade = 0;
+  matchedColors = [];
+  displayMatchResults.innerText = matchesText;
+};
 
-/* */
+const game = () => {
+  startGame.addEventListener("click", () => {
+    resetGame();
+    gameContainer.append(displayMatchResults);
+    let shuffledColors = shuffle(COLORS);
+    createDivsForColors(shuffledColors);
+    startGame.remove();
+  });
+};
+
+game();
