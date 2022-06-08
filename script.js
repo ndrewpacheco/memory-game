@@ -5,9 +5,9 @@ gameContainer.append(startGame);
 
 // Matches declarations
 let matchedColors;
-let matchesMade = 0;
+let matchesMade;
 const WINNING_NUMBER_OF_MATCHES = 5; // The app can only have a maximum of 5 winning matches with this current version
-let matchesText = `Matches made: ${matchesMade}. You need ${WINNING_NUMBER_OF_MATCHES} to win`;
+
 const displayMatchResults = document.createElement("h2");
 
 const COLORS = [
@@ -84,7 +84,7 @@ const clearBackgroundColors = () => {
 const createMatch = () => {
   matchedColors.push(firstGuess.className);
   matchesMade = matchedColors.length;
-  displayMatchResults.innerText = matchesText;
+  displayMatchResults.innerText = `Matches made: ${matchesMade}. You need ${WINNING_NUMBER_OF_MATCHES} to win`;
 };
 
 const determineWinner = () => {
@@ -135,7 +135,7 @@ const resetGame = () => {
   gameContainer.innerHTML = "";
   matchesMade = 0;
   matchedColors = [];
-  displayMatchResults.innerText = matchesText;
+  displayMatchResults.innerText = `Matches made: ${matchesMade}. You need ${WINNING_NUMBER_OF_MATCHES} to win`;
 };
 
 const game = () => {
