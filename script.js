@@ -6,7 +6,7 @@ gameContainer.append(startGame);
 // Matches declarations
 let matchedColors;
 let matchesMade = 0;
-const WINNING_NUMBER_OF_MATCHES = 1; // The app can only have a maximum of 5 winning matches with this current version
+const WINNING_NUMBER_OF_MATCHES = 5; // The app can only have a maximum of 5 winning matches with this current version
 let matchesText = `Matches made: ${matchesMade}. You need ${WINNING_NUMBER_OF_MATCHES} to win`;
 const displayMatchResults = document.createElement("h2");
 
